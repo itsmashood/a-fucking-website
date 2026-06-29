@@ -12,7 +12,7 @@
 
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-  <link rel="stylesheet" href="style.css?v=red-blue-sync-1" />
+  <link rel="stylesheet" href="style.css?v=theme-sync-2" />
 </head>
 
 <body class="locked">
@@ -229,6 +229,30 @@
     let lastParticle = 0;
 
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    /*
+      SITE THEME SYNC
+      Starts red, turns blue for 1 second, then returns red.
+      Change these three timings if your GIF loop is different.
+    */
+    const THEME_RED_TIME = 1400;
+    const THEME_BLUE_TIME = 1000;
+    const THEME_LOOP_TIME = 3200;
+
+    function runThemePulse() {
+      document.body.classList.remove("theme-blue");
+
+      setTimeout(() => {
+        document.body.classList.add("theme-blue");
+      }, THEME_RED_TIME);
+
+      setTimeout(() => {
+        document.body.classList.remove("theme-blue");
+      }, THEME_RED_TIME + THEME_BLUE_TIME);
+    }
+
+    runThemePulse();
+    setInterval(runThemePulse, THEME_LOOP_TIME);
 
     window.addEventListener("load", () => {
       setTimeout(() => {
