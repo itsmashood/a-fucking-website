@@ -443,18 +443,18 @@
     audio.addEventListener("ended", nextSong);
     audio.addEventListener("error", nextSong);
 
-    const sections = ["home", "about", "projects", "links", "credits"]
+    const navSections = ["about", "projects", "links", "credits"]
       .map(id => document.getElementById(id))
       .filter(Boolean);
 
     function updateActiveNav() {
       let current = "home";
-      const checkLine = window.innerHeight * 0.42;
+      const triggerLine = window.scrollY + window.innerHeight * 0.42;
 
-      sections.forEach(section => {
-        const rect = section.getBoundingClientRect();
+      navSections.forEach(section => {
+        const sectionTop = section.getBoundingClientRect().top + window.scrollY;
 
-        if (rect.top <= checkLine && rect.bottom >= checkLine) {
+        if (triggerLine >= sectionTop) {
           current = section.id;
         }
       });
