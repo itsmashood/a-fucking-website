@@ -923,25 +923,42 @@ body.entry-crack {
   bottom: 28px;
   z-index: 60;
   display: flex;
-  gap: 12px;
+  gap: 10px;
   align-items: center;
-  padding: 14px 18px;
-  color: #f4ecff;
+  padding: 10px;
   background: rgba(7,5,15,.42);
   border: 1px solid rgba(214,194,255,.35);
   backdrop-filter: blur(14px);
   box-shadow: 0 0 30px rgba(166,119,255,.28);
-  font-family: "Cinzel", serif;
-  letter-spacing: 3px;
 }
 
-.music-player.active {
+.music-btn {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  color: #f4ecff;
+  background: rgba(8,5,18,.56);
+  border: 1px solid rgba(214,194,255,.28);
+  border-radius: 6px;
+  font-size: 16px;
+  transition: .25s ease;
+}
+
+.music-btn:hover {
+  transform: translateY(-3px);
+  border-color: rgba(226,211,255,.65);
+  box-shadow: 0 0 35px rgba(190,150,255,.55);
+}
+
+.music-btn.active {
+  color: #ffffff;
+  border-color: rgba(226,211,255,.78);
   box-shadow: 0 0 45px rgba(190,150,255,.75);
 }
 
-.music-player:hover {
-  transform: translateY(-3px);
-  border-color: rgba(226,211,255,.65);
+.music-btn:active {
+  transform: translateY(0) scale(.96);
 }
 
 /* PARTICLES */
@@ -1402,6 +1419,13 @@ html::-webkit-scrollbar-thumb {
   .music-player {
     right: 18px;
     bottom: 18px;
+    gap: 8px;
+    padding: 8px;
+  }
+
+  .music-btn {
+    width: 44px;
+    height: 44px;
   }
 
   .entry-title {
