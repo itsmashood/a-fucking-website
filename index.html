@@ -51,6 +51,99 @@ body.entry-crack{animation:pageImpact .34s ease-in-out!important}
 @keyframes blink{from{opacity:.45}to{opacity:1}}
 @keyframes entryGrid{from{transform:translate(0,0)}to{transform:translate(80px,80px)}}
 @keyframes entryBlade{from{opacity:.35;transform:scaleY(.82)}to{opacity:1;transform:scaleY(1.08)}}
+
+/* FORCE SLASH EFFECTS */
+.slash-layer{
+  position:fixed!important;
+  inset:0!important;
+  z-index:100002!important;
+  pointer-events:none!important;
+  opacity:0!important;
+  visibility:hidden!important;
+  overflow:hidden!important;
+}
+
+.slash-layer.active{
+  visibility:visible!important;
+  opacity:1!important;
+}
+
+.slash{
+  position:absolute!important;
+  left:-20vw!important;
+  width:145vw!important;
+  height:4px!important;
+  background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,.95) 18%,#ff1f1f 45%,rgba(255,255,255,.9) 58%,transparent 100%)!important;
+  box-shadow:
+    0 0 12px white,
+    0 0 28px #ff0000,
+    0 0 70px rgba(255,0,0,.9)!important;
+  transform-origin:center!important;
+  opacity:0!important;
+  filter:blur(.2px)!important;
+}
+
+.slash::after{
+  content:""!important;
+  position:absolute!important;
+  inset:-22px 0!important;
+  background:linear-gradient(90deg,transparent,rgba(255,0,0,.22),transparent)!important;
+  filter:blur(18px)!important;
+}
+
+.slash-layer.active .slash-1{
+  top:32%!important;
+  transform:rotate(-18deg) translateX(-120vw)!important;
+  animation:slashCut1 .46s cubic-bezier(.05,.85,.15,1) forwards!important;
+}
+
+.slash-layer.active .slash-2{
+  top:47%!important;
+  transform:rotate(14deg) translateX(120vw)!important;
+  animation:slashCut2 .42s cubic-bezier(.05,.85,.15,1) .07s forwards!important;
+}
+
+.slash-layer.active .slash-3{
+  top:58%!important;
+  height:3px!important;
+  transform:rotate(-8deg) translateX(-120vw)!important;
+  animation:slashCut1 .38s cubic-bezier(.05,.85,.15,1) .14s forwards!important;
+}
+
+.slash-layer.active .slash-4{
+  top:24%!important;
+  height:2px!important;
+  transform:rotate(28deg) translateX(120vw)!important;
+  animation:slashCut2 .34s cubic-bezier(.05,.85,.15,1) .18s forwards!important;
+}
+
+.slash-layer.active .slash-5{
+  top:68%!important;
+  height:2px!important;
+  transform:rotate(-30deg) translateX(-120vw)!important;
+  animation:slashCut1 .34s cubic-bezier(.05,.85,.15,1) .22s forwards!important;
+}
+
+@keyframes slashCut1{
+  0%{opacity:0;transform:rotate(var(--r,-18deg)) translateX(-120vw) scaleX(.55)}
+  12%{opacity:1}
+  65%{opacity:1}
+  100%{opacity:0;transform:rotate(var(--r,-18deg)) translateX(120vw) scaleX(1.08)}
+}
+
+@keyframes slashCut2{
+  0%{opacity:0;transform:rotate(var(--r,14deg)) translateX(120vw) scaleX(.55)}
+  12%{opacity:1}
+  65%{opacity:1}
+  100%{opacity:0;transform:rotate(var(--r,14deg)) translateX(-120vw) scaleX(1.08)}
+}
+
+/* stronger red impact behind slash */
+.crack-flash.active{
+  visibility:visible!important;
+  animation:crackFlash .72s ease-out forwards!important;
+}
+
 </style>
 
 </head>
@@ -86,6 +179,14 @@ body.entry-crack{animation:pageImpact .34s ease-in-out!important}
   </div>
 
   <div class="crack-flash" id="crackFlash"></div>
+
+  <div class="slash-layer" id="slashLayer">
+    <span class="slash slash-1"></span>
+    <span class="slash slash-2"></span>
+    <span class="slash slash-3"></span>
+    <span class="slash slash-4"></span>
+    <span class="slash slash-5"></span>
+  </div>
   <div class="cross-cursor" id="crossCursor"></div>
 
   <div class="loading-screen">
@@ -244,6 +345,7 @@ body.entry-crack{animation:pageImpact .34s ease-in-out!important}
     const entryScreen = document.getElementById("entryScreen");
     const entryQuote = document.getElementById("entryQuote");
     const crackFlash = document.getElementById("crackFlash");
+    const slashLayer = document.getElementById("slashLayer");
     const crossCursor = document.getElementById("crossCursor");
     const loadingScreen = document.querySelector(".loading-screen");
 
@@ -376,6 +478,7 @@ body.entry-crack{animation:pageImpact .34s ease-in-out!important}
 
       document.body.classList.add("entry-crack");
       crackFlash.classList.add("active");
+      slashLayer.classList.add("active");
       entryQuote.classList.add("show");
 
       setTimeout(() => {
@@ -388,6 +491,7 @@ body.entry-crack{animation:pageImpact .34s ease-in-out!important}
       setTimeout(() => {
         entryScreen.remove();
         crackFlash.remove();
+        slashLayer.remove();
         entryQuote.remove();
         crossCursor.remove();
         document.body.classList.remove("entry-crack");
