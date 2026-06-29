@@ -12,10 +12,13 @@
 
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-  <link rel="stylesheet" href="style.css?v=slash-fix-2" />
+  <link rel="stylesheet" href="style.css?v=polish-3" />
 </head>
 
 <body class="locked">
+  <noscript>
+    <div class="noscript-warning">Enable JavaScript to experience the entry animation.</div>
+  </noscript>
   <div class="entry-screen" id="entryScreen">
     <div class="entry-content">
       <div class="entry-symbol">✦</div>
@@ -172,19 +175,19 @@
     </div>
 
     <div class="link-list">
-      <a href="https://github.com/itsmashood" target="_blank">
+      <a href="https://github.com/itsmashood" target="_blank" rel="noopener noreferrer" aria-label="Open Mashood GitHub">
         <i class="fab fa-github"></i>
         <span>GitHub</span>
         <b>OPEN →</b>
       </a>
 
-      <a href="https://discord.gg/VDd5rWpen9" target="_blank">
+      <a href="https://discord.gg/VDd5rWpen9" target="_blank" rel="noopener noreferrer" aria-label="Open Mashood Discord">
         <i class="fab fa-discord"></i>
         <span>Discord</span>
         <b>OPEN →</b>
       </a>
 
-      <a href="https://www.roblox.com/users/10773075053/profile" target="_blank">
+      <a href="https://www.roblox.com/users/10773075053/profile" target="_blank" rel="noopener noreferrer" aria-label="Open Mashood Roblox profile">
         <img src="roblox.png" alt="Roblox" />
         <span>Roblox</span>
         <b>OPEN →</b>
@@ -203,7 +206,7 @@
     </div>
   </section>
 
-  <button class="music-player" id="musicToggle">
+  <button class="music-player" id="musicToggle" type="button" aria-label="Toggle music">
     <i class="fa-solid fa-play"></i>
     <span>music</span>
   </button>
@@ -215,35 +218,51 @@
     const slashLayer = document.getElementById("slashLayer");
     const crossCursor = document.getElementById("crossCursor");
     const loadingScreen = document.querySelector(".loading-screen");
+    const musicToggle = document.getElementById("musicToggle");
+    const musicIcon = musicToggle.querySelector("i");
+    const navLinks = document.querySelectorAll(".side-nav a");
 
     let entered = false;
     let heartbeatInterval = null;
     let audioContext = null;
     let heartbeatStarted = false;
+    let lastParticle = 0;
+
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     window.addEventListener("load", () => {
       setTimeout(() => {
-        loadingScreen.classList.add("hide");
-      }, 900);
+        loadingScreen?.classList.add("hide");
+      }, prefersReducedMotion ? 150 : 900);
     });
 
-    document.addEventListener("mousemove", e => {
+    function spawnParticle(x, y) {
+      if (prefersReducedMotion) return;
+
+      const now = Date.now();
+      if (now - lastParticle < 38) return;
+      lastParticle = now;
+
+      const particle = document.createElement("div");
+      particle.className = "particle";
+      particle.textContent = "✦";
+      particle.style.left = x + "px";
+      particle.style.top = y + "px";
+      document.body.appendChild(particle);
+      setTimeout(() => particle.remove(), 900);
+    }
+
+    document.addEventListener("pointermove", e => {
       if (crossCursor) {
         crossCursor.style.left = e.clientX + "px";
         crossCursor.style.top = e.clientY + "px";
       }
 
-      const particle = document.createElement("div");
-      particle.className = "particle";
-      particle.textContent = "✦";
-      particle.style.left = e.clientX + "px";
-      particle.style.top = e.clientY + "px";
-      document.body.appendChild(particle);
-      setTimeout(() => particle.remove(), 900);
-    });
+      spawnParticle(e.clientX, e.clientY);
+    }, { passive: true });
 
     function playHeartbeatBeat() {
-      if (!audioContext) return;
+      if (!audioContext || prefersReducedMotion) return;
 
       const now = audioContext.currentTime;
 
@@ -271,7 +290,7 @@
     }
 
     function startHeartbeat() {
-      if (heartbeatStarted) return;
+      if (heartbeatStarted || prefersReducedMotion) return;
       heartbeatStarted = true;
 
       try {
@@ -290,15 +309,20 @@
       ".profile-panel, .status-card, .project-card, .link-list a, .credits-box"
     );
 
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("visible");
-        }
-      });
-    }, { threshold: 0.2 });
+    if ("IntersectionObserver" in window) {
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.18 });
 
-    revealItems.forEach(item => observer.observe(item));
+      revealItems.forEach(item => observer.observe(item));
+    } else {
+      revealItems.forEach(item => item.classList.add("visible"));
+    }
 
     const songs = [
       "music1.mp3", "music2.mp3", "music3.mp3", "music4.mp3", "music5.mp3",
@@ -310,12 +334,11 @@
 
     const audio = new Audio();
     audio.volume = 0.45;
-
-    const musicToggle = document.getElementById("musicToggle");
-    const musicIcon = musicToggle.querySelector("i");
+    audio.preload = "metadata";
 
     function loadSong() {
       audio.src = songs[currentSong];
+      musicToggle.title = `Now loaded: ${songs[currentSong]}`;
     }
 
     function nextSong() {
@@ -323,18 +346,29 @@
       loadSong();
 
       if (playing) {
-        audio.play().catch(() => {});
+        audio.play().catch(() => {
+          playing = false;
+          musicIcon.className = "fa-solid fa-play";
+          musicToggle.classList.remove("active");
+        });
       }
+    }
+
+    function setMusicState(isPlaying) {
+      playing = isPlaying;
+      musicIcon.className = isPlaying ? "fa-solid fa-pause" : "fa-solid fa-play";
+      musicToggle.classList.toggle("active", isPlaying);
+      musicToggle.setAttribute("aria-pressed", String(isPlaying));
     }
 
     function startMusic() {
       if (!audio.src) loadSong();
 
       audio.play().then(() => {
-        playing = true;
-        musicIcon.className = "fa-solid fa-pause";
-        musicToggle.classList.add("active");
-      }).catch(() => {});
+        setMusicState(true);
+      }).catch(() => {
+        setMusicState(false);
+      });
     }
 
     function enterSite() {
@@ -344,48 +378,66 @@
       stopHeartbeat();
 
       document.body.classList.add("entry-crack");
-      crackFlash.classList.add("active");
-      slashLayer.classList.add("active");
-      entryQuote.classList.add("show");
+      crackFlash?.classList.add("active");
+      slashLayer?.classList.add("active");
+      entryQuote?.classList.add("show");
 
       setTimeout(() => {
-        entryQuote.classList.remove("show");
-        entryScreen.classList.add("hide");
+        entryQuote?.classList.remove("show");
+        entryScreen?.classList.add("hide");
         document.body.classList.remove("locked");
         startMusic();
-      }, 650);
+      }, prefersReducedMotion ? 120 : 650);
 
       setTimeout(() => {
-        entryScreen.remove();
-        crackFlash.remove();
-        slashLayer.remove();
-        entryQuote.remove();
-        crossCursor.remove();
+        entryScreen?.remove();
+        crackFlash?.remove();
+        slashLayer?.remove();
+        entryQuote?.remove();
+        crossCursor?.remove();
         document.body.classList.remove("entry-crack");
-      }, 1500);
+      }, prefersReducedMotion ? 260 : 1500);
     }
 
-    entryScreen.addEventListener("pointermove", startHeartbeat);
-    entryScreen.addEventListener("pointerdown", enterSite);
+    entryScreen?.addEventListener("pointermove", startHeartbeat, { passive: true });
+    entryScreen?.addEventListener("pointerdown", enterSite);
+    entryScreen?.addEventListener("keydown", e => {
+      if (e.key === "Enter" || e.key === " ") enterSite();
+    });
 
     musicToggle.addEventListener("click", () => {
       if (!audio.src) loadSong();
 
       if (!playing) {
-        audio.play();
-        playing = true;
-        musicIcon.className = "fa-solid fa-pause";
-        musicToggle.classList.add("active");
+        audio.play().then(() => setMusicState(true)).catch(() => setMusicState(false));
       } else {
         audio.pause();
-        playing = false;
-        musicIcon.className = "fa-solid fa-play";
-        musicToggle.classList.remove("active");
+        setMusicState(false);
       }
     });
 
     audio.addEventListener("ended", nextSong);
     audio.addEventListener("error", nextSong);
+
+    const sections = document.querySelectorAll("main[id], section[id]");
+
+    function updateActiveNav() {
+      let current = "home";
+
+      sections.forEach(section => {
+        const rect = section.getBoundingClientRect();
+        if (rect.top <= window.innerHeight * 0.34) {
+          current = section.id;
+        }
+      });
+
+      navLinks.forEach(link => {
+        link.classList.toggle("active", link.getAttribute("href") === `#${current}`);
+      });
+    }
+
+    updateActiveNav();
+    window.addEventListener("scroll", updateActiveNav, { passive: true });
   </script>
 </body>
 </html>
