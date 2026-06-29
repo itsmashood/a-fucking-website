@@ -22,10 +22,34 @@
   <div class="entry-screen" id="entryScreen">
     <div class="entry-content">
       <div class="entry-symbol">✦</div>
-      <h1>PROVE YOURSELF</h1>
+
+      <h1 class="entry-title" aria-label="PROVE YOURSELF">
+        <span class="letter" style="--i:0">P</span>
+        <span class="letter" style="--i:1">R</span>
+        <span class="letter" style="--i:2">O</span>
+        <span class="letter" style="--i:3">V</span>
+        <span class="letter" style="--i:4">E</span>
+        <span class="space"></span>
+        <span class="letter" style="--i:5">Y</span>
+        <span class="letter" style="--i:6">O</span>
+        <span class="letter" style="--i:7">U</span>
+        <span class="letter" style="--i:8">R</span>
+        <span class="letter" style="--i:9">S</span>
+        <span class="letter" style="--i:10">E</span>
+        <span class="letter" style="--i:11">L</span>
+        <span class="letter" style="--i:12">F</span>
+      </h1>
+
       <p>click anywhere to awaken</p>
     </div>
   </div>
+
+  <div class="entry-quote" id="entryQuote">
+    <p>“Balance is absolute.”</p>
+  </div>
+
+  <div class="crack-flash" id="crackFlash"></div>
+  <div class="cross-cursor" id="crossCursor"></div>
 
   <div class="loading-screen">
     <div class="loading-mark">✦</div>
@@ -181,7 +205,14 @@
 
   <script>
     const entryScreen = document.getElementById("entryScreen");
+    const entryQuote = document.getElementById("entryQuote");
+    const crackFlash = document.getElementById("crackFlash");
+    const crossCursor = document.getElementById("crossCursor");
     const loadingScreen = document.querySelector(".loading-screen");
+
+    let entered = false;
+    let heartbeatInterval = null;
+    let audioContext = null;
 
     window.addEventListener("load", () => {
       setTimeout(() => {
@@ -190,6 +221,9 @@
     });
 
     document.addEventListener("mousemove", e => {
+      crossCursor.style.left = e.clientX + "px";
+      crossCursor.style.top = e.clientY + "px";
+
       const particle = document.createElement("div");
       particle.className = "particle";
       particle.textContent = "✦";
@@ -198,6 +232,47 @@
       document.body.appendChild(particle);
       setTimeout(() => particle.remove(), 900);
     });
+
+    function playHeartbeatBeat() {
+      if (!audioContext) return;
+
+      const now = audioContext.currentTime;
+
+      function beat(offset, strength) {
+        const osc = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(46, now + offset);
+        osc.frequency.exponentialRampToValueAtTime(34, now + offset + 0.12);
+
+        gain.gain.setValueAtTime(0.0001, now + offset);
+        gain.gain.exponentialRampToValueAtTime(strength, now + offset + 0.025);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + offset + 0.18);
+
+        osc.connect(gain);
+        gain.connect(audioContext.destination);
+
+        osc.start(now + offset);
+        osc.stop(now + offset + 0.2);
+      }
+
+      beat(0, 0.22);
+      beat(0.23, 0.15);
+    }
+
+    function startHeartbeat() {
+      try {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        playHeartbeatBeat();
+        heartbeatInterval = setInterval(playHeartbeatBeat, 1200);
+      } catch (err) {}
+    }
+
+    function stopHeartbeat() {
+      if (heartbeatInterval) clearInterval(heartbeatInterval);
+      heartbeatInterval = null;
+    }
 
     const revealItems = document.querySelectorAll(
       ".profile-panel, .status-card, .project-card, .link-list a, .credits-box"
@@ -250,14 +325,34 @@
       }).catch(() => {});
     }
 
-    entryScreen.addEventListener("click", () => {
-      entryScreen.classList.add("hide");
-      document.body.classList.remove("locked");
-      startMusic();
+    function enterSite() {
+      if (entered) return;
+      entered = true;
+
+      stopHeartbeat();
+
+      document.body.classList.add("entry-crack");
+      crackFlash.classList.add("active");
+      entryQuote.classList.add("show");
+
+      setTimeout(() => {
+        entryQuote.classList.remove("show");
+        entryScreen.classList.add("hide");
+        document.body.classList.remove("locked");
+        startMusic();
+      }, 650);
 
       setTimeout(() => {
         entryScreen.remove();
-      }, 900);
+        crackFlash.remove();
+        entryQuote.remove();
+        document.body.classList.remove("entry-crack");
+      }, 1500);
+    }
+
+    entryScreen.addEventListener("pointerdown", () => {
+      startHeartbeat();
+      enterSite();
     });
 
     musicToggle.addEventListener("click", () => {
