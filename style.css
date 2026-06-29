@@ -158,9 +158,9 @@ button {
 .entry-title .letter {
   display: inline-block;
   opacity: 0;
-  transform: translateY(-230px) scale(1.15);
-  animation: letterDrop .3s cubic-bezier(.08, .95, .18, 1.18) forwards;
-  animation-delay: calc(var(--i) * .045s);
+  transform: translateY(-360px) scale(1.18);
+  animation: letterDrop .38s cubic-bezier(.08, .95, .18, 1.18) forwards;
+  animation-delay: calc(var(--i) * .055s);
 }
 
 .entry-title .space {
@@ -927,18 +927,18 @@ body.entry-crack {
 @keyframes letterDrop {
   0% {
     opacity: 0;
-    transform: translateY(-230px) scale(1.15);
-    filter: blur(8px);
+    transform: translateY(-360px) scale(1.18);
+    filter: blur(10px);
   }
 
-  62% {
+  58% {
     opacity: 1;
-    transform: translateY(14px) scale(1);
+    transform: translateY(18px) scale(1);
     filter: blur(0);
   }
 
-  80% {
-    transform: translateY(-5px) scale(1);
+  76% {
+    transform: translateY(-7px) scale(1);
   }
 
   100% {
