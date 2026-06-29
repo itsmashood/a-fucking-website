@@ -12,7 +12,7 @@
 
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-  <link rel="stylesheet" href="style.css?v=theme-sync-2" />
+  <link rel="stylesheet" href="style.css?v=nav-fix-1" />
 </head>
 
 <body class="locked">
@@ -443,14 +443,18 @@
     audio.addEventListener("ended", nextSong);
     audio.addEventListener("error", nextSong);
 
-    const sections = document.querySelectorAll("main[id], section[id]");
+    const sections = ["home", "about", "projects", "links", "credits"]
+      .map(id => document.getElementById(id))
+      .filter(Boolean);
 
     function updateActiveNav() {
       let current = "home";
+      const checkLine = window.innerHeight * 0.42;
 
       sections.forEach(section => {
         const rect = section.getBoundingClientRect();
-        if (rect.top <= window.innerHeight * 0.34) {
+
+        if (rect.top <= checkLine && rect.bottom >= checkLine) {
           current = section.id;
         }
       });
@@ -460,8 +464,19 @@
       });
     }
 
+    navLinks.forEach(link => {
+      link.addEventListener("click", e => {
+        const target = document.querySelector(link.getAttribute("href"));
+        if (!target) return;
+
+        e.preventDefault();
+        target.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth", block: "start" });
+      });
+    });
+
     updateActiveNav();
     window.addEventListener("scroll", updateActiveNav, { passive: true });
+    window.addEventListener("resize", updateActiveNav);
   </script>
 </body>
 </html>
