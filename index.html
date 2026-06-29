@@ -7,14 +7,11 @@
   <title>Mashood | Balance</title>
 
   <link rel="icon" type="image/png" href="misaamane.png" />
-
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
-
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-
   <link rel="stylesheet" href="style.css" />
 </head>
 
@@ -213,6 +210,7 @@
     let entered = false;
     let heartbeatInterval = null;
     let audioContext = null;
+    let heartbeatStarted = false;
 
     window.addEventListener("load", () => {
       setTimeout(() => {
@@ -221,8 +219,10 @@
     });
 
     document.addEventListener("mousemove", e => {
-      crossCursor.style.left = e.clientX + "px";
-      crossCursor.style.top = e.clientY + "px";
+      if (crossCursor) {
+        crossCursor.style.left = e.clientX + "px";
+        crossCursor.style.top = e.clientY + "px";
+      }
 
       const particle = document.createElement("div");
       particle.className = "particle";
@@ -243,7 +243,7 @@
         const gain = audioContext.createGain();
 
         osc.type = "sine";
-        osc.frequency.setValueAtTime(46, now + offset);
+        osc.frequency.setValueAtTime(48, now + offset);
         osc.frequency.exponentialRampToValueAtTime(34, now + offset + 0.12);
 
         gain.gain.setValueAtTime(0.0001, now + offset);
@@ -257,11 +257,14 @@
         osc.stop(now + offset + 0.2);
       }
 
-      beat(0, 0.22);
-      beat(0.23, 0.15);
+      beat(0, 0.24);
+      beat(0.24, 0.16);
     }
 
     function startHeartbeat() {
+      if (heartbeatStarted) return;
+      heartbeatStarted = true;
+
       try {
         audioContext = new (window.AudioContext || window.webkitAudioContext)();
         playHeartbeatBeat();
@@ -346,14 +349,13 @@
         entryScreen.remove();
         crackFlash.remove();
         entryQuote.remove();
+        crossCursor.remove();
         document.body.classList.remove("entry-crack");
       }, 1500);
     }
 
-    entryScreen.addEventListener("pointerdown", () => {
-      startHeartbeat();
-      enterSite();
-    });
+    entryScreen.addEventListener("pointermove", startHeartbeat);
+    entryScreen.addEventListener("pointerdown", enterSite);
 
     musicToggle.addEventListener("click", () => {
       if (!audio.src) loadSong();
