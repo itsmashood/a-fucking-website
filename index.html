@@ -18,7 +18,15 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 
-<body>
+<body class="locked">
+  <div class="entry-screen" id="entryScreen">
+    <div class="entry-content">
+      <div class="entry-symbol">✦</div>
+      <h1>ENTER THE BALANCE</h1>
+      <p>click anywhere to awaken</p>
+    </div>
+  </div>
+
   <div class="loading-screen">
     <div class="loading-mark">✦</div>
     <p>BALANCE IS THE WORLD</p>
@@ -91,6 +99,7 @@
     <section class="status-card">
       <p>STATUS</p>
       <h3>ONLINE</h3>
+
       <div class="status-grid">
         <span>developer</span>
         <span>designer</span>
@@ -171,12 +180,13 @@
   </button>
 
   <script>
+    const entryScreen = document.getElementById("entryScreen");
     const loadingScreen = document.querySelector(".loading-screen");
 
     window.addEventListener("load", () => {
       setTimeout(() => {
         loadingScreen.classList.add("hide");
-      }, 1200);
+      }, 900);
     });
 
     document.addEventListener("mousemove", e => {
@@ -229,6 +239,26 @@
         audio.play().catch(() => {});
       }
     }
+
+    function startMusic() {
+      if (!audio.src) loadSong();
+
+      audio.play().then(() => {
+        playing = true;
+        musicIcon.className = "fa-solid fa-pause";
+        musicToggle.classList.add("active");
+      }).catch(() => {});
+    }
+
+    entryScreen.addEventListener("click", () => {
+      entryScreen.classList.add("hide");
+      document.body.classList.remove("locked");
+      startMusic();
+
+      setTimeout(() => {
+        entryScreen.remove();
+      }, 900);
+    });
 
     musicToggle.addEventListener("click", () => {
       if (!audio.src) loadSong();
