@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>-V O L T S T A N D I G-</title></title>
+  <title>-V O L T S T A N D I G-</title>
 
   <link rel="icon" type="image/png" href="misaamane.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -13,6 +13,70 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <link rel="stylesheet" href="style.css?v=nav-fix-1" />
+
+  <style>
+    .music-player {
+      position: fixed;
+      right: 28px;
+      bottom: 28px;
+      z-index: 60;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .music-control-btn {
+      min-width: 48px;
+      height: 48px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 0 15px;
+      color: #f4ecff;
+      background: rgba(7, 5, 15, .42);
+      border: 1px solid rgba(214, 194, 255, .35);
+      border-radius: 8px;
+      backdrop-filter: blur(14px);
+      box-shadow: 0 0 30px rgba(166, 119, 255, .28);
+      font-family: "Cinzel", serif;
+      letter-spacing: 3px;
+      transition: .25s ease;
+    }
+
+    .music-main-btn {
+      min-width: 118px;
+    }
+
+    .music-control-btn:hover {
+      transform: translateY(-3px);
+      border-color: rgba(226, 211, 255, .65);
+      box-shadow: 0 0 45px rgba(190, 150, 255, .75);
+    }
+
+    .music-control-btn.active {
+      box-shadow: 0 0 45px rgba(190, 150, 255, .75);
+    }
+
+    @media (max-width: 560px) {
+      .music-player {
+        right: 16px;
+        bottom: 16px;
+        gap: 8px;
+      }
+
+      .music-control-btn {
+        min-width: 42px;
+        height: 42px;
+        padding: 0 12px;
+      }
+
+      .music-main-btn {
+        min-width: 96px;
+      }
+    }
+  </style>
+
 </head>
 
 <body class="locked">
@@ -206,10 +270,20 @@
     </div>
   </section>
 
-  <button class="music-player" id="musicToggle" type="button" aria-label="Toggle music">
-    <i class="fa-solid fa-play"></i>
-    <span>music</span>
-  </button>
+  <div class="music-player" aria-label="Music controls">
+    <button class="music-control-btn" id="prevSongBtn" type="button" aria-label="Previous song" title="Previous song">
+      <i class="fa-solid fa-backward-step"></i>
+    </button>
+
+    <button class="music-control-btn music-main-btn" id="musicToggle" type="button" aria-label="Toggle music" aria-pressed="false" title="Play music">
+      <i class="fa-solid fa-play"></i>
+      <span>music</span>
+    </button>
+
+    <button class="music-control-btn" id="nextSongBtn" type="button" aria-label="Next song" title="Next song">
+      <i class="fa-solid fa-forward-step"></i>
+    </button>
+  </div>
 
   <script>
     const entryScreen = document.getElementById("entryScreen");
@@ -219,6 +293,8 @@
     const crossCursor = document.getElementById("crossCursor");
     const loadingScreen = document.querySelector(".loading-screen");
     const musicToggle = document.getElementById("musicToggle");
+    const prevSongBtn = document.getElementById("prevSongBtn");
+    const nextSongBtn = document.getElementById("nextSongBtn");
     const musicIcon = musicToggle.querySelector("i");
     const navLinks = document.querySelectorAll(".side-nav a");
 
@@ -363,19 +439,27 @@
     function loadSong() {
       audio.src = songs[currentSong];
       musicToggle.title = `Now loaded: ${songs[currentSong]}`;
+      musicToggle.querySelector("span").textContent = `${currentSong + 1}/${songs.length}`;
+    }
+
+    function playLoadedSongIfNeeded() {
+      if (!playing) return;
+
+      audio.play().catch(() => {
+        setMusicState(false);
+      });
     }
 
     function nextSong() {
       currentSong = (currentSong + 1) % songs.length;
       loadSong();
+      playLoadedSongIfNeeded();
+    }
 
-      if (playing) {
-        audio.play().catch(() => {
-          playing = false;
-          musicIcon.className = "fa-solid fa-play";
-          musicToggle.classList.remove("active");
-        });
-      }
+    function prevSong() {
+      currentSong = (currentSong - 1 + songs.length) % songs.length;
+      loadSong();
+      playLoadedSongIfNeeded();
     }
 
     function setMusicState(isPlaying) {
@@ -439,6 +523,9 @@
         setMusicState(false);
       }
     });
+
+    nextSongBtn.addEventListener("click", nextSong);
+    prevSongBtn.addEventListener("click", prevSong);
 
     audio.addEventListener("ended", nextSong);
     audio.addEventListener("error", nextSong);
