@@ -1,12 +1,162 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-  <title>My First Website</title>
-  <link rel="stylesheet" href="style.css">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>About Me</title>
+
+<link rel="icon" type="image/png" href="misaamane.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=IBM+Plex+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<link rel="stylesheet" href="style.css">
+
 </head>
 
 <body>
-  <h1>Hello World 👋</h1>
-  <p>This is my static website on Vercel.</p>
+
+<h1 class="title">𝓦𝓮𝓵𝓬𝓸𝓶𝓮 𝓽𝓸 𝓶𝔂 𝓹𝓪𝓰𝓮！</h1>
+
+<div class="subtitle">
+✦ ⦮ようこそ ⦯ ⟆ ✦
+</div>
+
+<div class="container">
+
+<div class="about-box">
+
+<h2> 𝔞𝔟𝔬𝔲𝔱 𝔪𝔢 </h2>
+
+<div class="about-item">
+<i class="fa-solid fa-crown"></i>
+<p>ℌ𝔢y 𝔦'𝔪 𝔪𝔞𝔰𝔥𝔬𝔬d, 17 y𝔢𝔞𝔯𝔰 𝔬𝔩d.</p>
+</div>
+
+<div class="about-item">
+<i class="fa-solid fa-star"></i>
+<p>i 𝔱𝔯y 𝔱𝔬 𝔟𝔯𝔦𝔫𝔤 𝔤𝔬𝔬𝔡 𝔦𝔫 𝔞 𝔴𝔬𝔯𝔩𝔡 𝔣𝔦𝔩𝔩𝔢d 𝔴𝔦𝔱𝔥 𝔢𝔳𝔦𝔩.</p>
+</div>
+
+<div class="about-item">
+<i class="fa-solid fa-gem"></i>
+<p>
+i 𝔬𝔴𝔫 𝔞𝔫 𝔢𝔵𝔭𝔬𝔰𝔢 𝔣𝔦𝔩𝔢 𝔰𝔢𝔯𝔳𝔢𝔯 𝔴𝔥𝔦𝔠𝔥 y𝔬𝔲 𝔠𝔞𝔫 𝔣𝔦𝔫d 𝔟𝔢𝔩𝔬𝔴 — 𝔧𝔲𝔰𝔱 𝔠𝔩𝔦𝔠k 𝔱𝔥𝔢 𝔇𝔦𝔰𝔠𝔬𝔯𝔡 𝔦𝔠𝔬𝔫 :)
+</p>
+</div>
+
+<div class="about-item">
+<i class="fa-solid fa-heart"></i>
+<p>i 𝔥𝔞𝔳𝔢 𝔱𝔥𝔯𝔢𝔢 𝔰𝔬𝔠𝔦𝔞𝔩𝔰: ℜ𝔬𝔟𝔩𝔬𝔵, 𝔇𝔦𝔰𝔠𝔬𝔯𝔡 𝔞𝔫d 𝔊𝔦𝔱ℌ𝔲𝔟.</p>
+</div>
+
+</div>
+
+</div>
+
+<div class="divider"></div>
+
+<div class="social-icons">
+
+<a href="https://github.com/itsmashood" target="_blank" class="social-btn">
+<i class="fab fa-github"></i>
+</a>
+
+<a href="https://discord.gg/VDd5rWpen9" target="_blank" class="social-btn">
+<i class="fab fa-discord"></i>
+</a>
+
+<a href="https://www.roblox.com/users/10773075053/profile" target="_blank" class="social-btn">
+<img src="roblox.png" alt="Roblox" class="social-image">
+</a>
+
+</div>
+
+<div class="heart-divider">♥</div>
+
+<div class="scroll-down">
+↓ SCROLL DOWN ↓
+</div>
+
+<section class="credits-section">
+
+<div class="credits-box">
+
+<h2>✦ CREDITS ✦</h2>
+
+<p>script: radia & karrraaa & mina </p>
+<p>stylist: swoftbwunnies</p>
+<p>animations: n/a </p>
+<p>songs: chandelier - wil paquin</p>
+<p>Button designer - mxllie</p>
+
+</div>
+
+</section>
+
+<script>
+
+// cursor particles
+document.addEventListener("mousemove", (e) => {
+
+const particle = document.createElement("div");
+particle.className = "particle";
+
+particle.style.left = e.clientX + "px";
+particle.style.top = e.clientY + "px";
+
+document.body.appendChild(particle);
+
+setTimeout(() => particle.remove(), 600);
+
+});
+
+// music system
+const songs = [
+"music1.mp3","music2.mp3","music3.mp3","music4.mp3","music5.mp3",
+"music6.mp3","music7.mp3","music8.mp3","music9.mp3","music10.mp3"
+];
+
+let currentSong = 0;
+
+const audio = new Audio();
+audio.volume = 0.5;
+
+function playSong() {
+
+audio.src = songs[currentSong];
+
+audio.play().catch(() => {
+document.addEventListener("click", () => audio.play(), { once: true });
+});
+
+}
+
+function nextSong() {
+
+currentSong++;
+
+if (currentSong >= songs.length)
+currentSong = 0;
+
+playSong();
+
+}
+
+audio.addEventListener("ended", nextSong);
+audio.addEventListener("error", nextSong);
+
+window.addEventListener("load", playSong);
+
+</script>
+
 </body>
 </html>
