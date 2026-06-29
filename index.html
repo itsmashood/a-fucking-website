@@ -3,119 +3,251 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>About Me</title>
 
-  <link rel="icon" type="image/png" href="misaamane.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=IBM+Plex+Mono:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="stylesheet" href="style.css">
+  <title>Mashood | Balance</title>
+
+  <link rel="icon" type="image/png" href="misaamane.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
-  <div class="bg-overlay"></div>
+  <div class="loading-screen">
+    <div class="loading-mark">✦</div>
+    <p>BALANCE IS THE WORLD</p>
+  </div>
 
-  <nav class="nav">
-    <a href="#about">about</a>
-    <a href="#socials">socials</a>
-    <a href="#credits">credits</a>
+  <div class="background-layer"></div>
+  <div class="mist-layer"></div>
+  <div class="vignette-layer"></div>
+
+  <nav class="side-nav">
+    <a href="#home"><span>01</span> home</a>
+    <a href="#about"><span>02</span> about</a>
+    <a href="#projects"><span>03</span> projects</a>
+    <a href="#links"><span>04</span> links</a>
+    <a href="#credits"><span>05</span> credits</a>
   </nav>
 
-  <main class="hero" id="about">
-    <div class="sigil">✦</div>
+  <main id="home" class="hero">
+    <section class="hero-content">
+      <p class="eyebrow">STERNRITTER · BALANCE</p>
 
-    <h1 class="title">Welcome to my page!</h1>
-    <p class="subtitle">✧ ようこそ ✧</p>
+      <h1 class="main-title">
+        JUGRAM
+        <span>HASCHWALTH</span>
+      </h1>
 
-    <section class="about-box">
-      <h2>about me</h2>
+      <p class="hero-quote">“The world exists in balance.”</p>
 
-      <div class="about-item">
-        <i class="fa-solid fa-crown"></i>
-        <p>Hey, i'm mashood, 17 years old.</p>
+      <div class="profile-panel" id="about">
+        <div class="panel-top">
+          <span></span>
+          <h2>ABOUT MASHOOD</h2>
+          <span></span>
+        </div>
+
+        <div class="terminal-lines">
+          <div class="line">
+            <b>&gt; name</b>
+            <p>Mashood</p>
+          </div>
+
+          <div class="line">
+            <b>&gt; age</b>
+            <p>17 years old</p>
+          </div>
+
+          <div class="line">
+            <b>&gt; purpose</b>
+            <p>I try to bring good in a world filled with evil.</p>
+          </div>
+
+          <div class="line">
+            <b>&gt; server</b>
+            <p>I own an expose file server — click Discord below.</p>
+          </div>
+
+          <div class="line">
+            <b>&gt; socials</b>
+            <p>Roblox · Discord · GitHub</p>
+          </div>
+        </div>
       </div>
 
-      <div class="about-item">
-        <i class="fa-solid fa-star"></i>
-        <p>I try to bring good in a world filled with evil.</p>
-      </div>
-
-      <div class="about-item">
-        <i class="fa-solid fa-gem"></i>
-        <p>I own an expose file server — click the Discord icon below.</p>
-      </div>
-
-      <div class="about-item">
-        <i class="fa-solid fa-heart"></i>
-        <p>I have three socials: Roblox, Discord and GitHub.</p>
-      </div>
+      <a href="#projects" class="enter-button">
+        <span>ENTER THE BALANCE</span>
+        <i class="fa-solid fa-arrow-down"></i>
+      </a>
     </section>
 
-    <div class="quote">QUINCY · LOYALTY · JUSTICE</div>
-
-    <section class="social-icons" id="socials">
-      <a href="https://github.com/itsmashood" target="_blank" class="social-btn">
-        <i class="fab fa-github"></i>
-      </a>
-
-      <a href="https://discord.gg/VDd5rWpen9" target="_blank" class="social-btn">
-        <i class="fab fa-discord"></i>
-      </a>
-
-      <a href="https://www.roblox.com/users/10773075053/profile" target="_blank" class="social-btn">
-        <img src="roblox.png" alt="Roblox">
-      </a>
+    <section class="status-card">
+      <p>STATUS</p>
+      <h3>ONLINE</h3>
+      <div class="status-grid">
+        <span>developer</span>
+        <span>designer</span>
+        <span>student</span>
+        <span>creator</span>
+      </div>
     </section>
-
-    <a href="#credits" class="scroll-down">↓ SCROLL DOWN ↓</a>
   </main>
 
-  <section class="credits-section" id="credits">
-    <div class="credits-box">
-      <h2>✦ CREDITS ✦</h2>
-      <p>script: radia & karrraaa & mina</p>
-      <p>stylist: swoftbwunnies</p>
-      <p>animations: n/a</p>
-      <p>songs: chandelier - wil paquin</p>
-      <p>button designer: mxllie</p>
+  <section class="section projects-section" id="projects">
+    <div class="section-heading">
+      <p>03</p>
+      <h2>PROJECTS</h2>
+    </div>
+
+    <div class="project-grid">
+      <article class="project-card">
+        <span>01</span>
+        <h3>Expose Server</h3>
+        <p>Archive, community and file hub.</p>
+      </article>
+
+      <article class="project-card">
+        <span>02</span>
+        <h3>Web Design</h3>
+        <p>Dark UI, themed pages and profile layouts.</p>
+      </article>
+
+      <article class="project-card">
+        <span>03</span>
+        <h3>Lua Tools</h3>
+        <p>Scripts, interfaces and automation experiments.</p>
+      </article>
     </div>
   </section>
 
+  <section class="section links-section" id="links">
+    <div class="section-heading">
+      <p>04</p>
+      <h2>LINKS</h2>
+    </div>
+
+    <div class="link-list">
+      <a href="https://github.com/itsmashood" target="_blank">
+        <i class="fab fa-github"></i>
+        <span>GitHub</span>
+        <b>OPEN →</b>
+      </a>
+
+      <a href="https://discord.gg/VDd5rWpen9" target="_blank">
+        <i class="fab fa-discord"></i>
+        <span>Discord</span>
+        <b>OPEN →</b>
+      </a>
+
+      <a href="https://www.roblox.com/users/10773075053/profile" target="_blank">
+        <img src="roblox.png" alt="Roblox" />
+        <span>Roblox</span>
+        <b>OPEN →</b>
+      </a>
+    </div>
+  </section>
+
+  <section class="section credits-section" id="credits">
+    <div class="credits-box">
+      <h2>✦ CREDITS ✦</h2>
+      <p><span>script</span> radia & karrraaa & mina</p>
+      <p><span>stylist</span> swoftbwunnies</p>
+      <p><span>animations</span> n/a</p>
+      <p><span>songs</span> chandelier - wil paquin</p>
+      <p><span>button designer</span> mxllie</p>
+    </div>
+  </section>
+
+  <button class="music-player" id="musicToggle">
+    <i class="fa-solid fa-play"></i>
+    <span>music</span>
+  </button>
+
   <script>
-    document.addEventListener("mousemove", e => {
-      const p = document.createElement("div");
-      p.className = "particle";
-      p.style.left = e.clientX + "px";
-      p.style.top = e.clientY + "px";
-      document.body.appendChild(p);
-      setTimeout(() => p.remove(), 700);
+    const loadingScreen = document.querySelector(".loading-screen");
+
+    window.addEventListener("load", () => {
+      setTimeout(() => {
+        loadingScreen.classList.add("hide");
+      }, 1200);
     });
 
+    document.addEventListener("mousemove", e => {
+      const particle = document.createElement("div");
+      particle.className = "particle";
+      particle.textContent = "✦";
+      particle.style.left = e.clientX + "px";
+      particle.style.top = e.clientY + "px";
+      document.body.appendChild(particle);
+      setTimeout(() => particle.remove(), 900);
+    });
+
+    const revealItems = document.querySelectorAll(
+      ".profile-panel, .status-card, .project-card, .link-list a, .credits-box"
+    );
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+        }
+      });
+    }, { threshold: 0.2 });
+
+    revealItems.forEach(item => observer.observe(item));
+
     const songs = [
-      "music1.mp3","music2.mp3","music3.mp3","music4.mp3","music5.mp3",
-      "music6.mp3","music7.mp3","music8.mp3","music9.mp3","music10.mp3"
+      "music1.mp3", "music2.mp3", "music3.mp3", "music4.mp3", "music5.mp3",
+      "music6.mp3", "music7.mp3", "music8.mp3", "music9.mp3", "music10.mp3"
     ];
 
     let currentSong = 0;
+    let playing = false;
+
     const audio = new Audio();
     audio.volume = 0.45;
 
-    function playSong() {
+    const musicToggle = document.getElementById("musicToggle");
+    const musicIcon = musicToggle.querySelector("i");
+
+    function loadSong() {
       audio.src = songs[currentSong];
-      audio.play().catch(() => {
-        document.addEventListener("click", () => audio.play(), { once: true });
-      });
     }
 
     function nextSong() {
       currentSong = (currentSong + 1) % songs.length;
-      playSong();
+      loadSong();
+
+      if (playing) {
+        audio.play().catch(() => {});
+      }
     }
+
+    musicToggle.addEventListener("click", () => {
+      if (!audio.src) loadSong();
+
+      if (!playing) {
+        audio.play();
+        playing = true;
+        musicIcon.className = "fa-solid fa-pause";
+        musicToggle.classList.add("active");
+      } else {
+        audio.pause();
+        playing = false;
+        musicIcon.className = "fa-solid fa-play";
+        musicToggle.classList.remove("active");
+      }
+    });
 
     audio.addEventListener("ended", nextSong);
     audio.addEventListener("error", nextSong);
-    window.addEventListener("load", playSong);
   </script>
 </body>
 </html>
